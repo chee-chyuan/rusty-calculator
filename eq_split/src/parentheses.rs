@@ -253,7 +253,7 @@ fn regroup_to_left(
 
                 right_after.insert(0, current_char);
                 temp_left.pop();
-                left_after.append(&mut temp_left);
+                left_after.append(&mut temp_left.clone());
 
                 if temp_left.is_empty() {
                     left_after.append(&mut right_after);
@@ -311,7 +311,7 @@ fn regroup_to_left(
 
                 right_after.insert(0, current_char);
                 temp_left.pop();
-                left_after.append(&mut temp_left);
+                left_after.append(&mut temp_left.clone());
 
                 if temp_left.is_empty() {
                     left_after.append(&mut right_after);
@@ -618,8 +618,8 @@ mod tests {
         let left = EquationString::remove_whitespaces(left);
         let right = EquationString::remove_whitespaces(right);
         let (left_after, right_after) = regroup_to_left(left, right);
-        assert_eq!(left_after.to_string(), "(1+3)^1");
-        assert_eq!(right_after.to_string(), "^(1/3)");
+        assert_eq!(left_after.to_string(), "(1+3)^1^(1/3)");
+        assert_eq!(right_after.to_string(), "");
     }
 
     #[test]
