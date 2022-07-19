@@ -157,6 +157,10 @@ impl SplitOperator for EquationString {
             let found_operator_res = OperatorFinder::find_last(eq.to_vec(), matcher, None);
 
             if let Some((index, operator)) = found_operator_res {
+                if index == 0 {
+                    return (eq.clone(), Vec::new() , Operators::None);
+                }
+
                 let operator = Operators::to_enum(operator);
                 return (eq[..index].to_vec(), eq[index + 1..].to_vec(), operator);
             }
@@ -170,6 +174,9 @@ impl SplitOperator for EquationString {
             let found_operator_res = OperatorFinder::find_last(eq.to_vec(), matcher, None);
 
             if let Some((index, operator)) = found_operator_res {
+                if index == 0 {
+                    return (eq.clone(), Vec::new() , Operators::None);
+                }
                 let operator = Operators::to_enum(operator);
                 return (eq[..index].to_vec(), eq[index + 1..].to_vec(), operator);
             }

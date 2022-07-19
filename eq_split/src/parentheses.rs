@@ -230,59 +230,59 @@ fn regroup_to_left(
     // we check from the back
     // to treat items in the parentheses as a single entity
     // if split occur return
-    {
-        let mut left_after = left.clone();
-        let mut temp_left = right.clone();
-        let mut right_after: EquationString = Vec::new();
+    // {
+    //     let mut left_after = left.clone();
+    //     let mut temp_left = right.clone();
+    //     let mut right_after: EquationString = Vec::new();
 
-        loop {
-            let temp_left_len = temp_left.len();
-            if temp_left_len == 0 {
-                break;
-            }
+    //     loop {
+    //         let temp_left_len = temp_left.len();
+    //         if temp_left_len == 0 {
+    //             break;
+    //         }
 
-            let current_index = temp_left_len - 1;
-            let current_char = temp_left[current_index];
-            let is_medium_precendence_operator =
-                medium_precedence_matcher.match_operator(current_char);
-            if is_medium_precendence_operator {
-                // move char to right (front)
-                // remove char from temp_left
-                // append temp_left to left_after
-                // return
+    //         let current_index = temp_left_len - 1;
+    //         let current_char = temp_left[current_index];
+    //         let is_medium_precendence_operator =
+    //             medium_precedence_matcher.match_operator(current_char);
+    //         if is_medium_precendence_operator {
+    //             // move char to right (front)
+    //             // remove char from temp_left
+    //             // append temp_left to left_after
+    //             // return
 
-                right_after.insert(0, current_char);
-                temp_left.pop();
-                left_after.append(&mut temp_left.clone());
+    //             right_after.insert(0, current_char);
+    //             temp_left.pop();
+    //             left_after.append(&mut temp_left.clone());
 
-                if temp_left.is_empty() {
-                    left_after.append(&mut right_after);
-                    right_after = Vec::new();
-                }
+    //             if temp_left.is_empty() {
+    //                 left_after.append(&mut right_after);
+    //                 right_after = Vec::new();
+    //             }
 
-                return (left_after, right_after);
-            } else {
-                // detect for closing bracket
-                // if so we detect for the opening bracket and move everythig to the right
-                // update temp_left and right_after (front) accordingly
-                if current_char == ')' {
-                    let (left_parentheses_index, right_parentheses_index) =
-                        ParenthesesFinder::find_last(temp_left.clone())
-                            .unwrap()
-                            .unwrap();
+    //             return (left_after, right_after);
+    //         } else {
+    //             // detect for closing bracket
+    //             // if so we detect for the opening bracket and move everythig to the right
+    //             // update temp_left and right_after (front) accordingly
+    //             if current_char == ')' {
+    //                 let (left_parentheses_index, right_parentheses_index) =
+    //                     ParenthesesFinder::find_last(temp_left.clone())
+    //                         .unwrap()
+    //                         .unwrap();
 
-                    let mut parentheses_vec =
-                        temp_left[left_parentheses_index..right_parentheses_index + 1].to_vec();
-                    parentheses_vec.extend_from_slice(&right_after);
-                    right_after = parentheses_vec;
-                    temp_left = temp_left[..left_parentheses_index].to_vec();
-                } else {
-                    right_after.insert(0, current_char);
-                    temp_left.pop();
-                }
-            }
-        }
-    }
+    //                 let mut parentheses_vec =
+    //                     temp_left[left_parentheses_index..right_parentheses_index + 1].to_vec();
+    //                 parentheses_vec.extend_from_slice(&right_after);
+    //                 right_after = parentheses_vec;
+    //                 temp_left = temp_left[..left_parentheses_index].to_vec();
+    //             } else {
+    //                 right_after.insert(0, current_char);
+    //                 temp_left.pop();
+    //             }
+    //         }
+    //     }
+    // }
 
     // whatever that is left has to be ^
     // and since it has the highest precendece
@@ -370,8 +370,11 @@ fn regroup_to_right(left: EquationString) -> (EquationString, EquationString) {
         // we can ignore the first char as it could be -ve or +ve or number
         // it doesnt matter to us
         let first_char = right_after[0];
-        left_after.push(first_char);
-        right_after = right_after[1..].to_vec();
+
+        if first_char != '(' {
+            left_after.push(first_char);
+            right_after = right_after[1..].to_vec();
+        }
 
         loop {
             if right_after.len() == 0 {
@@ -604,16 +607,16 @@ mod tests {
         let left = EquationString::remove_whitespaces(left);
         let right = EquationString::remove_whitespaces(right);
         let (left_after, right_after) = regroup_to_left(left, right);
-        assert_eq!(left_after.to_string(), "(1+3)*1*-2^2");
-        assert_eq!(right_after.to_string(), "/(13+5)^1");
+        assert_eq!(left_after.to_string(), "(1+3)*1*-2^2/(13+5)^1");
+        assert_eq!(right_after.to_string(), "");
 
         let left = "(1+3)";
         let right = "*1*-2^2/-2^1";
         let left = EquationString::remove_whitespaces(left);
         let right = EquationString::remove_whitespaces(right);
         let (left_after, right_after) = regroup_to_left(left, right);
-        assert_eq!(left_after.to_string(), "(1+3)*1*-2^2");
-        assert_eq!(right_after.to_string(), "/-2^1");
+        assert_eq!(left_after.to_string(), "(1+3)*1*-2^2/-2^1");
+        assert_eq!(right_after.to_string(), "");
     }
 
     #[test]

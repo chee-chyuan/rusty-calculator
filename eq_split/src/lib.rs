@@ -1,10 +1,11 @@
 use operators::{Operators, SplitOperator};
 use parentheses::{FindParentheses, ParenthesesFinder, SplitParentheses};
 
-mod eq_sanitize;
-mod operators;
+pub mod eq_sanitize;
+pub mod operators;
 mod parentheses;
 mod precedences;
+pub mod math_characters;
 
 pub type EquationString = Vec<char>;
 
@@ -15,6 +16,9 @@ pub trait FullSplit {
 }
 
 impl FullSplit for EquationString {
+    /// split equation to a two halves, a left and a right
+    /// callee will need to reiterative call this function
+    /// to ensure all nodes are single value only
     fn split(&self) -> Result<(Self, Self, Operators), String>
     where
         Self: Sized,
@@ -137,5 +141,36 @@ mod tests {
         assert_eq!(left.to_string(), "-1");
         assert_eq!(right.to_string(), "(-2^2^5)*25");
         assert_eq!(operator, Operators::Plus);
+    }
+
+    #[test]
+    pub fn test_more() {
+        let eq = "0.1+(2+3)*5/3*2+((5+2)+2)";
+        let eq = EquationString::remove_whitespaces(eq);
+        let (left, right, operator) = eq.split().unwrap();
+        assert_eq!(left.to_string(), "0.1+(2+3)*5/3*2");
+        assert_eq!(right.to_string(), "((5+2)+2)");
+        assert_eq!(operator, Operators::Plus);
+
+        let eq = "0.1+(2+3)*5/3*2";
+        let eq = EquationString::remove_whitespaces(eq);
+        let (left, right, operator) = eq.split().unwrap();
+        assert_eq!(left.to_string(), "0.1");
+        assert_eq!(right.to_string(), "(2+3)*5/3*2");
+        assert_eq!(operator, Operators::Plus);
+
+        let eq = "(2+3)*5/3*2";
+        let eq = EquationString::remove_whitespaces(eq);
+        let (left, right, operator) = eq.split().unwrap();
+        assert_eq!(left.to_string(), "(2+3)*5/3");
+        assert_eq!(right.to_string(), "2");
+        assert_eq!(operator, Operators::Mult);
+
+        let eq = "(2+3)*5/3";
+        let eq = EquationString::remove_whitespaces(eq);
+        let (left, right, operator) = eq.split().unwrap();
+        assert_eq!(left.to_string(), "(2+3)*5");
+        assert_eq!(right.to_string(), "3");
+        assert_eq!(operator, Operators::Div);
     }
 }

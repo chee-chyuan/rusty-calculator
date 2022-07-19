@@ -1,4 +1,5 @@
 use crate::{
+    math_characters::is_math_character,
     parentheses::{FindParentheses, ParenthesesFinder},
     precedences::{all_matcher::AllMatcher, traits::MatchOperator},
     EquationString,
@@ -6,6 +7,9 @@ use crate::{
 
 pub trait EqSanitize {
     fn remove_whitespaces(eq: &str) -> Self;
+    fn handle_special_character_multiplication(&self) -> Result<Self, String>
+    where
+        Self: Sized;
     fn handle_direct_multiplication(&self) -> Result<Self, String>
     where
         Self: Sized;
@@ -18,6 +22,36 @@ impl EqSanitize for EquationString {
     fn remove_whitespaces(eq: &str) -> Self {
         let new_eq = eq.replace(" ", "");
         new_eq.chars().collect::<EquationString>()
+    }
+
+    fn handle_special_character_multiplication(&self) -> Result<Self, String> {
+        let mut new_eq: EquationString = Vec::new();
+        let mut eq = self.to_vec();
+
+        let mut previous_char: Option<char> = None;
+
+        loop {
+            let eq_len = eq.len();
+            if eq_len == 0 {
+                break;
+            }
+
+            let current_char = eq[0];
+            if is_math_character(current_char)
+                && previous_char.is_some()
+                && previous_char.unwrap().is_digit(10)
+            {
+                previous_char = Some(current_char);
+                new_eq.push('*');
+                new_eq.push(current_char);
+                eq = eq[1..].to_vec();
+            } else {
+                previous_char = Some(current_char);
+                new_eq.push(current_char);
+                eq = eq[1..].to_vec();
+            }
+        }
+        Ok(new_eq)
     }
 
     /// perform string manipulation to add '*' to operations involving brackets
@@ -105,6 +139,14 @@ impl EqSanitize for EquationString {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    pub fn test_handle_special_character_multiplication() {
+        let eq = "e(e)e+2e^ep";
+        let eq = EquationString::remove_whitespaces(eq);
+        let new_eq = eq.handle_special_character_multiplication().unwrap();
+        assert_eq!(new_eq.to_string(), "e(e)e+2*e^ep");
+    }
 
     #[test]
     pub fn test_handle_direct_multiplication() {
