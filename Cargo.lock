@@ -5,6 +5,9 @@ version = 3
 [[package]]
 name = "calculator_v4"
 version = "0.1.0"
+dependencies = [
+ "operation_tree",
+]
 
 [[package]]
 name = "eq_split"

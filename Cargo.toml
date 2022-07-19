@@ -1,14 +1,15 @@
 [package]
+edition = "2021"
 name = "calculator_v4"
 version = "0.1.0"
-edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+operation_tree = {path = "./operation_tree"}
 
 [workspace]
 members = [
-    "eq_split",
-    "operation_tree"
+  "eq_split",
+  "operation_tree",
 ]

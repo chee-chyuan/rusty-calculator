@@ -177,6 +177,9 @@ mod tests {
 
     #[test]
     pub fn test_invalid_eq() {
+        let eq = "";
+        assert!(OperationNode::new(eq).is_err());
+
         let eq = "*1+5";
         assert!(OperationNode::new(eq).is_err());
 
