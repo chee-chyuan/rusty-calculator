@@ -84,7 +84,7 @@ impl EqSanitize for EquationString {
                 eq = eq[1..].to_vec();
             } else if current_char == ')' && eq.len() > 1 {
                 let next_char = eq[1];
-                if !all_matcher.match_operator(next_char) {
+                if !all_matcher.match_operator(next_char) && next_char != ')' {
                     previous_char = Some('*');
                     new_eq.push(current_char);
                     new_eq.push('*');
@@ -123,6 +123,11 @@ mod tests {
 
     #[test]
     pub fn test_handle_direct_multiplication() {
+        let eq = "2(π+3)^e+7--(5/(3-2))*pi";
+        let eq = EquationString::remove_whitespaces(eq);
+        let new_eq = eq.handle_direct_multiplication().unwrap();
+        assert_eq!(new_eq.to_string(), "2*(π+3)^e+7--(5/(3-2))*pi");
+
         let eq = "2(e+2)^π*2+-((5+7/2)-3^pi)";
         let eq = EquationString::remove_whitespaces(eq);
         let new_eq = eq.handle_direct_multiplication().unwrap();
