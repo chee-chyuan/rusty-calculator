@@ -291,6 +291,10 @@ mod tests {
         let eq = "2(e+2)^π*2+-((5+7/2)-3^pi)";
         let operation_node = OperationNode::new(eq).unwrap();
         assert_eq!(operation_node.calculate(), 546.4210876660936);
+
+        let eq = "6731.23-13^-34/5^e(pi*2(6+7)4)^-3";
+        let operation_node = OperationNode::new(eq).unwrap();
+        assert_eq!(operation_node.calculate(), 6731.23);
     }
 }
 
