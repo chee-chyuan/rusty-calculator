@@ -1,5 +1,5 @@
 # Calculator
-This is a simple calculator console app written in Rust
+This is a simple calculator console app written in Rust. <br>
 To start up the console, <br>
 Run at the root of the folder:
 
@@ -7,7 +7,7 @@ Run at the root of the folder:
 cargo run
 ```
 
-The program will exit with 0 and an Answer if the program is successful and exit with 1 with no output when unsuccessful.
+The program will exit with 0 with an answer if the program is successful and exit with 1 with no output when unsuccessful.
 
 ## Operator
 The calculator has the following operators:
@@ -29,7 +29,7 @@ e | Euler's number
 
 Also supports parentheses with correct '(' and ')'
 
-Example of input:
+Example of valid input:
 ```
 2(π+3)^e+7--(5/(3-2))*pi
 ```
@@ -40,4 +40,13 @@ Answer:
 300.55126786594144
 
 Exit with 0
+```
+
+<br>
+
+Example of invalid input:
+```
+Enter Equation :
+(1+2
+Exit with 1
 ```
