@@ -24,6 +24,8 @@ impl EqSanitize for EquationString {
         new_eq.chars().collect::<EquationString>()
     }
 
+    /// add a * in between a number and a special character
+    /// eg 5π -> 5*π
     fn handle_special_character_multiplication(&self) -> Result<Self, String> {
         let mut new_eq: EquationString = Vec::new();
         let mut eq = self.to_vec();

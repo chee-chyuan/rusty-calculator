@@ -5,7 +5,7 @@ pub mod eq_sanitize;
 pub mod operators;
 mod parentheses;
 mod precedences;
-pub mod math_characters;
+mod math_characters;
 
 pub type EquationString = Vec<char>;
 
