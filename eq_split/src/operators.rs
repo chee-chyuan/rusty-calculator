@@ -232,9 +232,6 @@ mod tests {
     #[test]
     fn test_find_next_operator_with_start_index() {
         let all_operator = AllMatcher {};
-        let low_precedence = LowPrecedenceMatcher {};
-        let medium_precedence = MediumPrecendenceMatcher {};
-        let high_precedence = HighPrecedenceMatcher {};
 
         let eq = "123456789+1*1-1/1";
         let eq = eq.chars().collect::<EquationString>();
@@ -253,10 +250,7 @@ mod tests {
 
     #[test]
     pub fn test_find_last_operator() {
-        let all_operator = AllMatcher {};
-        let low_precedence = LowPrecedenceMatcher {};
         let medium_precedence = MediumPrecendenceMatcher {};
-        let high_precedence = HighPrecedenceMatcher {};
 
         let eq = "5/2*3";
         let eq = eq.chars().collect::<EquationString>();

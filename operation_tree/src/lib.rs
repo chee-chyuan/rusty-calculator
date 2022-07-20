@@ -48,6 +48,7 @@ impl OperationNode {
         let (left, right, operator) = split_res.unwrap();
 
         if operator == Operators::None {
+            #[allow(unused_assignments)]
             let mut left_float = 0.0;
 
             let math_character_position_res = math_character_position(left.clone());

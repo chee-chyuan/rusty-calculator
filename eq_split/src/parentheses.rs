@@ -109,6 +109,8 @@ impl SplitParentheses for EquationString {
         left_parentheses_index: usize,
         right_parentheses_index: usize,
     ) -> (Self, Self) {
+
+        #[allow(unused_assignments)]
         let mut left: Self = Self::new();
         let mut right: Self = Self::new();
 
@@ -168,8 +170,6 @@ fn regroup_to_left(
 ) -> (EquationString, EquationString) {
     let all_matcher = AllMatcher {};
     let low_precedence_matcher = LowPrecedenceMatcher {};
-    let medium_precedence_matcher = MediumPrecendenceMatcher {};
-    let high_precedence_matcher = HighPrecedenceMatcher {};
 
     // first, check for all + and - and split it
     // check from front and move the front to the left
@@ -226,128 +226,13 @@ fn regroup_to_left(
         }
     }
 
-    // else split by * or / from
-    // we check from the back
-    // to treat items in the parentheses as a single entity
-    // if split occur return
-    // {
-    //     let mut left_after = left.clone();
-    //     let mut temp_left = right.clone();
-    //     let mut right_after: EquationString = Vec::new();
-
-    //     loop {
-    //         let temp_left_len = temp_left.len();
-    //         if temp_left_len == 0 {
-    //             break;
-    //         }
-
-    //         let current_index = temp_left_len - 1;
-    //         let current_char = temp_left[current_index];
-    //         let is_medium_precendence_operator =
-    //             medium_precedence_matcher.match_operator(current_char);
-    //         if is_medium_precendence_operator {
-    //             // move char to right (front)
-    //             // remove char from temp_left
-    //             // append temp_left to left_after
-    //             // return
-
-    //             right_after.insert(0, current_char);
-    //             temp_left.pop();
-    //             left_after.append(&mut temp_left.clone());
-
-    //             if temp_left.is_empty() {
-    //                 left_after.append(&mut right_after);
-    //                 right_after = Vec::new();
-    //             }
-
-    //             return (left_after, right_after);
-    //         } else {
-    //             // detect for closing bracket
-    //             // if so we detect for the opening bracket and move everythig to the right
-    //             // update temp_left and right_after (front) accordingly
-    //             if current_char == ')' {
-    //                 let (left_parentheses_index, right_parentheses_index) =
-    //                     ParenthesesFinder::find_last(temp_left.clone())
-    //                         .unwrap()
-    //                         .unwrap();
-
-    //                 let mut parentheses_vec =
-    //                     temp_left[left_parentheses_index..right_parentheses_index + 1].to_vec();
-    //                 parentheses_vec.extend_from_slice(&right_after);
-    //                 right_after = parentheses_vec;
-    //                 temp_left = temp_left[..left_parentheses_index].to_vec();
-    //             } else {
-    //                 right_after.insert(0, current_char);
-    //                 temp_left.pop();
-    //             }
-    //         }
-    //     }
-    // }
-
-    // whatever that is left has to be ^
-    // and since it has the highest precendece
+    // whatever that is left has to be *,/ or ^
     // we just group everything to the left
 
     let mut left_after = left.clone();
     let mut right_after = right.clone();
     left_after.append(&mut right_after);
     (left_after, EquationString::new())
-
-    // {
-    //     let mut left_after = left.clone();
-    //     let mut temp_left = right.clone();
-    //     let mut right_after: EquationString = Vec::new();
-
-    //     loop {
-    //         let temp_left_len = temp_left.len();
-    //         if temp_left_len == 0 {
-    //             break;
-    //         }
-
-    //         let current_index = temp_left_len - 1;
-    //         let current_char = temp_left[current_index];
-    //         let is_higher_precendence_operator =
-    //             high_precedence_matcher.match_operator(current_char);
-    //         if is_higher_precendence_operator {
-    //             // move char to right (front)
-    //             // remove char from temp_left
-    //             // append temp_left to left_after
-    //             // return
-
-    //             right_after.insert(0, current_char);
-    //             temp_left.pop();
-    //             left_after.append(&mut temp_left.clone());
-
-    //             if temp_left.is_empty() {
-    //                 left_after.append(&mut right_after);
-    //                 right_after = Vec::new();
-    //             }
-
-    //             return (left_after, right_after);
-    //         } else {
-    //             // detect for closing bracket
-    //             // if so we detect for the opening bracket and move everythig to the right
-    //             // update temp_left and right_after (front) accordingly
-    //             if current_char == ')' {
-    //                 let (left_parentheses_index, right_parentheses_index) =
-    //                     ParenthesesFinder::find_last(temp_left.clone())
-    //                         .unwrap()
-    //                         .unwrap();
-
-    //                 let mut parentheses_vec =
-    //                     temp_left[left_parentheses_index..right_parentheses_index + 1].to_vec();
-    //                 parentheses_vec.extend_from_slice(&right_after);
-    //                 right_after = parentheses_vec;
-    //                 temp_left = temp_left[..left_parentheses_index].to_vec();
-    //             } else {
-    //                 right_after.insert(0, current_char);
-    //                 temp_left.pop();
-    //             }
-    //         }
-    //     }
-    // }
-
-    // (left, right)
 }
 
 /// splitting left to right according to precedence
