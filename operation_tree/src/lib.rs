@@ -36,6 +36,10 @@ impl OperationNode {
         }
 
         let eq = eq_res.unwrap();
+        if eq.is_empty() {
+            return Err(String::from("Cannot be empty"));
+        }
+
         return Self::create(eq);
     }
 
@@ -297,4 +301,3 @@ mod tests {
         assert_eq!(operation_node.calculate(), 6731.23);
     }
 }
-

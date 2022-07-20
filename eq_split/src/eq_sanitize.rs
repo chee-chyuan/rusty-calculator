@@ -126,7 +126,7 @@ mod tests {
         let eq = "2(e+2)^π*2+-((5+7/2)-3^pi)";
         let eq = EquationString::remove_whitespaces(eq);
         let new_eq = eq.handle_direct_multiplication().unwrap();
-        assert_eq!(new_eq.to_string(), "(pi*2*(6+7)*4)");
+        assert_eq!(new_eq.to_string(), "2*(e+2)^π*2+-((5+7/2)-3^pi)");
 
         let eq = "(pi*2(6+7)4)";
         let eq = EquationString::remove_whitespaces(eq);
