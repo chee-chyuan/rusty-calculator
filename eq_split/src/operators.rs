@@ -120,8 +120,8 @@ impl SplitOperator for EquationString {
             let mut left: Vec<char> = Vec::new();
             let mut right = self.to_vec();
 
-            let all_matcher = AllMatcher {};
-            let matcher = LowPrecedenceMatcher {};
+            let all_matcher = AllMatcher;
+            let matcher = LowPrecedenceMatcher;
 
             loop {
                 if right.len() == 0 {
@@ -153,7 +153,7 @@ impl SplitOperator for EquationString {
         {
             let eq = self.to_vec();
 
-            let matcher = MediumPrecendenceMatcher {};
+            let matcher = MediumPrecendenceMatcher;
             let found_operator_res = OperatorFinder::find_last(eq.to_vec(), matcher, None);
 
             if let Some((index, operator)) = found_operator_res {
@@ -170,7 +170,7 @@ impl SplitOperator for EquationString {
         {
             let eq = self.to_vec();
 
-            let matcher = HighPrecedenceMatcher {};
+            let matcher = HighPrecedenceMatcher;
             let found_operator_res = OperatorFinder::find_last(eq.to_vec(), matcher, None);
 
             if let Some((index, operator)) = found_operator_res {
@@ -202,10 +202,10 @@ mod tests {
 
     #[test]
     pub fn test_find_next_operator() {
-        let all_operator = AllMatcher {};
-        let low_precedence = LowPrecedenceMatcher {};
-        let medium_precedence = MediumPrecendenceMatcher {};
-        let high_precedence = HighPrecedenceMatcher {};
+        let all_operator = AllMatcher;
+        let low_precedence = LowPrecedenceMatcher;
+        let medium_precedence = MediumPrecendenceMatcher;
+        let high_precedence = HighPrecedenceMatcher;
 
         let eq = "123456789+1*1-1/1";
         let eq = eq.chars().collect::<EquationString>();
@@ -250,7 +250,7 @@ mod tests {
 
     #[test]
     pub fn test_find_last_operator() {
-        let medium_precedence = MediumPrecendenceMatcher {};
+        let medium_precedence = MediumPrecendenceMatcher;
 
         let eq = "5/2*3";
         let eq = eq.chars().collect::<EquationString>();
