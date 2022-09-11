@@ -1,4 +1,5 @@
 # Calculator
+Just me trying to learn Rust. <br>
 This is a simple calculator console app written in Rust. <br>
 To start up the console, <br>
 Run at the root of the folder:
@@ -8,6 +9,10 @@ cargo run
 ```
 
 The program will exit with 0 with an answer if the program is successful and exit with 1 with no output when unsuccessful.
+
+## Workings
+There are initialze sanitization of the user inputs, such as removing white spaces, converting `5e` to `5*e` <br>
+Afterwards, the sanitized equation will be splitted into two parts according to the precedence and added into a tree.
 
 ## Operator
 The calculator has the following operators:
